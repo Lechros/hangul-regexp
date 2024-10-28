@@ -29,6 +29,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.13.0"],\
           ["@types/eslint__js", "npm:8.42.3"],\
+          ["es-hangul", "npm:2.1.0"],\
           ["eslint", "virtual:c7d1c46cdeef4c395a718f9d68b8b8111920fde280cbd03f120dc7ecd666acd34160a53ed676a473de01cd240cee32a5f75f5bc3ee8d609ec8df16bde989c339#npm:9.13.0"],\
           ["eslint-config-prettier", "virtual:c7d1c46cdeef4c395a718f9d68b8b8111920fde280cbd03f120dc7ecd666acd34160a53ed676a473de01cd240cee32a5f75f5bc3ee8d609ec8df16bde989c339#npm:9.1.0"],\
           ["prettier", "npm:3.3.3"],\
@@ -1387,6 +1388,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["es-hangul", [\
+      ["npm:2.1.0", {\
+        "packageLocation": "../.yarn/berry/cache/es-hangul-npm-2.1.0-2922f24947-10c0.zip/node_modules/es-hangul/",\
+        "packageDependencies": [\
+          ["es-hangul", "npm:2.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["esbuild", [\
       ["npm:0.21.5", {\
         "packageLocation": "./.yarn/unplugged/esbuild-npm-0.21.5-d85dfbc965/node_modules/esbuild/",\
@@ -1811,6 +1821,7 @@ const RAW_RUNTIME_STATE =
           ["hangul-match", "workspace:."],\
           ["@eslint/js", "npm:9.13.0"],\
           ["@types/eslint__js", "npm:8.42.3"],\
+          ["es-hangul", "npm:2.1.0"],\
           ["eslint", "virtual:c7d1c46cdeef4c395a718f9d68b8b8111920fde280cbd03f120dc7ecd666acd34160a53ed676a473de01cd240cee32a5f75f5bc3ee8d609ec8df16bde989c339#npm:9.13.0"],\
           ["eslint-config-prettier", "virtual:c7d1c46cdeef4c395a718f9d68b8b8111920fde280cbd03f120dc7ecd666acd34160a53ed676a473de01cd240cee32a5f75f5bc3ee8d609ec8df16bde989c339#npm:9.1.0"],\
           ["prettier", "npm:3.3.3"],\

@@ -1024,6 +1024,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-hangul@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "es-hangul@npm:2.1.0"
+  checksum: 10c0/d94819e6055168b6476c28851f8afd296da39adb5bc9ed6bb6d6bbd481e3c5bf702385459d8169b14539bae45959e9f757f72a9a222955f0246d9596f79e3255
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.21.3":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
@@ -1451,6 +1458,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.13.0"
     "@types/eslint__js": "npm:^8.42.3"
+    es-hangul: "npm:^2.1.0"
     eslint: "npm:^9.13.0"
     eslint-config-prettier: "npm:^9.1.0"
     prettier: "npm:3.3.3"
