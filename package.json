@@ -1,4 +1,21 @@
 {
   "name": "hangul-match",
-  "packageManager": "yarn@4.4.1"
+  "version": "0.0.0",
+  "repository": "github:lechros/hangul-match",
+  "packageManager": "yarn@4.4.1",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/eslint__js": "^8.42.3",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.3.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0",
+    "vitest": "^2.1.3"
+  }
 }
