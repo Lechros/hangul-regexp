@@ -3,7 +3,23 @@ import {
   getChoseong,
   getJongseong,
   getJungseong,
+  includesHangul,
 } from './hangul';
+
+describe(includesHangul.name, () => {
+  it.for([
+    ['가', true],
+    ['ㄱ', true],
+    ['ㅢ', true],
+    ['1', false],
+    ['햏a', true],
+    ['a가', true],
+    ['1ㄱ1', true],
+    ['z', false],
+  ] as const)('%s를 받으면 %s를 반환한다.', ([str, expected]) => {
+    expect(includesHangul(str)).toBe(expected);
+  });
+});
 
 test('getChoseong은 문자의 초성을 반환한다.', () => {
   expect(getChoseong('광'.charCodeAt(0))).toBe('ㄱ');

@@ -1,4 +1,4 @@
-import { includesHangul, matchHangul } from './match';
+import { matchHangul } from './match';
 
 describe(matchHangul.name, () => {
   it('두 문자열이 동일할 경우 true를 반환한다.', () => {
@@ -122,21 +122,6 @@ describe(matchHangul.name, () => {
     }
     const end = performance.now();
     expect((end - start) / iter).toBeLessThan(10);
-  });
-});
-
-describe(includesHangul.name, () => {
-  it.for([
-    ['가', true],
-    ['ㄱ', true],
-    ['ㅢ', true],
-    ['1', false],
-    ['햏a', true],
-    ['a가', true],
-    ['1ㄱ1', true],
-    ['z', false],
-  ] as const)('%s를 받으면 %s를 반환한다.', ([str, expected]) => {
-    expect(includesHangul(str)).toBe(expected);
   });
 });
 
