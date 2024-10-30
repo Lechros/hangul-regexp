@@ -1,16 +1,4 @@
-import {
-  canBeChoseong,
-  combineCharacter,
-  convertQwertyToHangul,
-  disassemble,
-  getChoseong,
-} from 'es-hangul';
-import {
-  convertToHangul,
-  getCharChoseong,
-  includesHangul,
-  matchHangul,
-} from './match';
+import { includesHangul, matchHangul } from './match';
 
 describe(matchHangul.name, () => {
   it('두 문자열이 동일할 경우 true를 반환한다.', () => {
@@ -116,11 +104,21 @@ describe(matchHangul.name, () => {
     expect((end - start) / iter).toBeLessThan(10);
   });
 
-  it('마지막 문자 보정을 포함한 2000회 호출이 평균 10ms 이상 걸리지 않는다.', () => {
+  it('마지막 문자 보정을 포함한 10000회 호출이 평균 10ms 이상 걸리지 않는다.', () => {
     const iter = 100;
     const start = performance.now();
-    for (let i = 0; i < 2000 * iter; i++) {
+    for (let i = 0; i < 10000 * iter; i++) {
       matchHangul('루즈 컨트롤 머신 마크', '루즈 컨롤 머맠');
+    }
+    const end = performance.now();
+    expect((end - start) / iter).toBeLessThan(10);
+  });
+
+  it('초성 검색의 10000회 호출이 평균 10ms 이상 걸리지 않는다.', () => {
+    const iter = 100;
+    const start = performance.now();
+    for (let i = 0; i < 10000 * iter; i++) {
+      matchHangul('루즈 컨트롤 머신 마크', 'ㄹㅈ ㅋㅌㄹ ㅁㅁㅋ');
     }
     const end = performance.now();
     expect((end - start) / iter).toBeLessThan(10);
@@ -142,42 +140,17 @@ describe(includesHangul.name, () => {
   });
 });
 
-describe(convertToHangul.name, () => {
-  it('akrltdks을 넣으면 마깃안을 반환한다.', () => {
-    expect(convertToHangul('akrltdks')).toBe('마깃안');
-  });
-
-  it('Tkrnfu를 넣으면 싸구려를 반환한다.', () => {
-    expect(convertToHangul('Tkrnfu')).toBe('싸구려');
-  });
-});
-
 test('ㅄ은 ㄱ-ㅎ 사이의 값이다.', () => {
   expect(/[ㄱ-ㅎ]/.test('ㅄ')).toBe(true);
 });
 
-test('ㅃ를 disassemble하면 ㅃ이다', () => {
-  expect(disassemble('ㅃ')).toBe('ㅃ');
+test('NFC 문자열에서 charCodeAt과 [i]는 동일한 인덱스를 사용한다.', () => {
+  const str = 'a1가뷁B_@영슈왊';
+  for (let i = 0; i < str.length; i++) {
+    expect(str.charCodeAt(i)).toBe(str[i].charCodeAt(0));
+  }
 });
 
-test('getChoseong에 알파벳, 숫자를 넣으면 빈 문자열을 반환한다.', () => {
-  expect(getChoseong('a')).toBe('');
-  expect(getChoseong('1')).toBe('');
-});
-
-test('combineCharacter에 초성 1개, 중성 2개를 넣으면 오류를 발생한다.', () => {
-  expect(() => combineCharacter('ㄱ', 'ㅏ', 'ㅓ')).toThrow();
-});
-
-test('canBeChoseong에 ㅆ을 넣으면 true를 반환한다.', () => {
-  expect(canBeChoseong('ㅆ')).toBe(true);
-});
-
-test('convertQwertyToHangul에 dkssud을 넣으면 안녕을 반환한다.', () => {
-  expect(convertQwertyToHangul('dkssud')).toBe('안녕');
-  expect(convertQwertyToHangul('dkssud')).not.toBe('ㅇㅏㄴㄴㅕㅇ');
-});
-
-test('getCharChoseong에 광을 넣으면 ㄱ을 반환한다.', () => {
-  expect(getCharChoseong('광')).toBe('ㄱ');
+test('가의 charCode는 44032이다.', () => {
+  expect('가'.charCodeAt(0)).toBe(44032);
 });

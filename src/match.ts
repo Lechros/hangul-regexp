@@ -1,10 +1,11 @@
 import {
-  canBeJungseong,
-  convertQwertyToHangul,
-  disassemble,
+  disassembleChoseong,
+  disassembleToHangulCodeAndChoseong,
   getChoseong,
   hasBatchim,
-} from 'es-hangul';
+  isFullHangul,
+  isPartial,
+} from './hangul';
 
 /**
  * 문자열에 한글 문자가 포함되었는지 검사합니다.
@@ -13,15 +14,6 @@ import {
  */
 export function includesHangul(text: string): boolean {
   return /[가-힣ㄱ-ㅣ]/.test(text);
-}
-
-/**
- * 문자열의 알파벳을 qwerty 자판에 매칭되는 한글로 변환합니다.
- * @param text 변환할 문자열.
- * @returns 한글로 변환된 문자열.
- */
-export function convertToHangul(text: string) {
-  return convertQwertyToHangul(text);
 }
 
 /**
@@ -73,7 +65,7 @@ export function matchHangul(target: string, search: string) {
       return true;
     }
     // 검색 문자열의 마지막 문자를 분리하고 대상 문자열의 일부로 만들 수 있는 경우 참 반환. ('가나', '간')
-    if (includesPartialOrSeperatedHangul(target, search[j], matchedI + 1)) {
+    if (includesSeperatedHangul(target, search[j], matchedI + 1)) {
       return true;
     }
   }
@@ -88,11 +80,14 @@ function matchChoseong(target: string, search: string) {
     return false;
   }
   // 자음군(ㄻ, ㅄ) 처리. 쌍받침(ㄲ, ㅃ, ㅆ)은 분리되지 않음.
-  search = disassemble(search);
+  search = disassembleChoseong(search);
   let j = 0;
   for (let i = 0; i < target.length && j < search.length; i++) {
     // 한글이 아닐 경우 동등 비교에서 통과, 한글일 경우 초성 비교.
-    if (target[i] === search[j] || getCharChoseong(target[i]) === search[j]) {
+    if (
+      target[i] === search[j] ||
+      getChoseong(target.charCodeAt(i)) === search[j]
+    ) {
       j++;
     }
   }
@@ -107,9 +102,9 @@ function includesPartialHangul(
   searchChar: string,
   targetStartIndex: number,
 ) {
-  const disassembled = disassemble(searchChar);
+  const charCode = searchChar.charCodeAt(0);
   for (let i = targetStartIndex; i < target.length; i++) {
-    if (disassemble(target[i]).startsWith(disassembled)) {
+    if (isPartial(target.charCodeAt(i), charCode)) {
       return true;
     }
   }
@@ -119,20 +114,20 @@ function includesPartialHangul(
 /**
  * targetStartIndex부터 시작하여 target 내에 searchChar를 분리하여 매칭할 수 있는 경우 `true`; 아닐 경우 `false`.
  */
-function includesPartialOrSeperatedHangul(
+function includesSeperatedHangul(
   target: string,
   searchChar: string,
   targetStartIndex: number,
 ) {
-  if (!hasBatchim(searchChar)) {
+  const charCode = searchChar.charCodeAt(0);
+  if (!isFullHangul(charCode) || !hasBatchim(charCode)) {
     return false;
   }
-  const disassembled = disassemble(searchChar);
-  const [hangul, choseong] = disassembleToHangulAndChoseong(disassembled);
+  const [hangulCode, choseong] = disassembleToHangulCodeAndChoseong(charCode);
   for (let i = targetStartIndex; i < target.length; i++) {
-    if (disassemble(target[i]) === hangul) {
+    if (target.charCodeAt(i) === hangulCode) {
       for (let j = i + 1; j < target.length; j++) {
-        if (getCharChoseong(target[j]) === choseong) {
+        if (getChoseong(target.charCodeAt(j)) === choseong) {
           return true;
         }
       }
@@ -141,51 +136,3 @@ function includesPartialOrSeperatedHangul(
   }
   return false;
 }
-
-/**
- * 한글 문자를 한글 문자와 초성으로 분리합니다.
- */
-function disassembleToHangulAndChoseong(disassembledHangulWithBatchim: string) {
-  const parts = disassembledHangulWithBatchim;
-  let i;
-  for (i = parts.length - 1; i >= 0; i--) {
-    if (canBeJungseong(parts[i])) {
-      break;
-    }
-  }
-  // 겹받침일 경우 하나는 이전 글자에 포함, 하나는 다음 글자의 초성으로 취급.
-  if (parts.substring(i + 1).length >= 2) {
-    return [parts.substring(0, i + 2), parts.substring(i + 2)];
-  } else {
-    return [parts.substring(0, i + 1), parts.substring(i + 1)];
-  }
-}
-
-/**
- * 한글 문자의 초성을 반환합니다. `getChoseong`의 최적화된 버전입니다.
- */
-export function getCharChoseong(char: string) {
-  return CHOSEONGS[char.normalize('NFD').charCodeAt(0) - 0x1100];
-}
-
-const CHOSEONGS = [
-  'ㄱ',
-  'ㄲ',
-  'ㄴ',
-  'ㄷ',
-  'ㄸ',
-  'ㄹ',
-  'ㅁ',
-  'ㅂ',
-  'ㅃ',
-  'ㅅ',
-  'ㅆ',
-  'ㅇ',
-  'ㅈ',
-  'ㅉ',
-  'ㅊ',
-  'ㅋ',
-  'ㅌ',
-  'ㅍ',
-  'ㅎ',
-];
