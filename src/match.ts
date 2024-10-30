@@ -4,6 +4,7 @@ import {
   getChoseong,
   hasBatchim,
   isFullHangul,
+  isOnlyChoseong,
   isPartial,
 } from './hangul';
 
@@ -67,6 +68,9 @@ export function matchHangul(target: string, search: string) {
  * search가 초성 문자로 이루어져 있고, target의 연속되지 않은 부분 문자열의 초성일 경우 `true`; 아닐 경우 `false`.
  */
 function matchChoseong(target: string, search: string) {
+  if (!isOnlyChoseong(search)) {
+    return false;
+  }
   if (/[ㅏ-ㅣ가-힣]/.test(search)) {
     return false;
   }

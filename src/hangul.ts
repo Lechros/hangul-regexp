@@ -8,6 +8,15 @@ export function includesHangul(text: string): boolean {
 }
 
 /**
+ * 문자열에 포함된 한글 문자가 모두 초성인지 검사합니다.
+ * @param text 검사할 문자열.
+ * @returns 한글 문자가 모두 초성일 경우 `true`; 아닐 경우 `false`.
+ */
+export function isOnlyChoseong(text: string): boolean {
+  return !/[ㅏ-ㅣ가-힣]/.test(text);
+}
+
+/**
  * 완전한 한글 문자의 초성을 반환합니다.
  */
 export function getChoseong(code: number) {
