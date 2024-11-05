@@ -1696,9 +1696,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hangul-match@workspace:.":
+"hangul-regexp@workspace:.":
   version: 0.0.0-use.local
-  resolution: "hangul-match@workspace:."
+  resolution: "hangul-regexp@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.13.0"
     "@types/eslint__js": "npm:^8.42.3"

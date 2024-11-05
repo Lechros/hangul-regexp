@@ -1,7 +1,7 @@
 {
-  "name": "hangul-match",
+  "name": "hangul-regexp",
   "version": "0.0.0",
-  "repository": "github:lechros/hangul-match",
+  "repository": "github:lechros/hangul-regexp",
   "packageManager": "yarn@4.4.1",
   "type": "module",
   "scripts": {

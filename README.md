@@ -1,1 +1,1 @@
-# hangul-match
+# hangul-regexp
